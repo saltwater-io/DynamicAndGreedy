@@ -1,10 +1,22 @@
+'''
+    This program implements a regular and dynamic solution to the rod cutting problem,
+    as well as an implementation of a greedy algorithm to solve a scheduling problem.
+
+    Written by: Dakota McGuire - 4/2/19
+    For Algorithms - USM
+
+'''
 # rod_prices = {1: 1, 2: 5, 3: 8, 4: 9, 5: 10, 6: 17, 7: 17, 8: 20, 9: 24, 10: 30}
+
+# Price of each length of section of rod
 rod_price = [1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
 
+# Start times for activities - index matches end times
 start_times = [0, 1, 3, 0, 5, 3, 5, 6, 8, 8, 2, 12]
+# End times for activities - index matches start times
 finish_times = [0, 4, 5, 6, 7, 9, 9, 10, 11, 12, 14, 16]
 
-
+# Returns max value from two numbers
 def get_max(a, b):
     if a > b:
         return a
@@ -12,6 +24,7 @@ def get_max(a, b):
         return b
 
 
+# Cuts rod w/ repetition - not dynamic
 def cut_rod(price, n):
     if not n > 0:
         return 0
@@ -20,10 +33,10 @@ def cut_rod(price, n):
         max_value = get_max(max_value, price[i] + cut_rod(price, n - i - 1))
     return max_value
 
-
+# Cuts rod dynamically from bottom-up
 def cut_bottom_up(price, n):
     stored_prices = []
-    for i in range(0, n+1):
+    for i in range(0, n + 1):
         stored_prices.append(0)
     max_value = 0
     for j in range(1, n):
@@ -31,9 +44,9 @@ def cut_bottom_up(price, n):
             max_value = get_max(max_value, price[k] + stored_prices[j - k - 1])
         stored_prices[j] = max_value
     return stored_prices[n]
-    pass
 
 
+# Helper function to run rod cutting algorithm
 def rod_cutting():
     size = len(rod_price)
     print("")
@@ -43,6 +56,7 @@ def rod_cutting():
     print("Maximum bottom-up at length ", test, ": ", cut_bottom_up(rod_price, test))
 
 
+# Greedy Algorithm implemented to solve scheduling tasks
 def get_greedy(start, finish):
     n = len(start)
     a = []
@@ -53,8 +67,6 @@ def get_greedy(start, finish):
             k = m
     return a
 
-    pass
-
 
 def main():
     rod_cutting()
@@ -63,9 +75,6 @@ def main():
     for activity in activities:
         output = output + str(activity) + " "
     print(output)
-
-
-    pass
 
 
 if __name__ == "__main__":
